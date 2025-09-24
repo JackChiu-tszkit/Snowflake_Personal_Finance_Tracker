@@ -1,5 +1,8 @@
 import snowflake.connector
 import pandas as pd
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import SNOWFLAKE_CONFIG, TABLE_CONFIG
 import logging
 
@@ -78,7 +81,7 @@ class SnowflakeConnector:
                 CREATE TABLE IF NOT EXISTS transactions (
                     id INTEGER AUTOINCREMENT PRIMARY KEY,
                     date DATE NOT NULL,
-                    type VARCHAR(10) NOT NULL CHECK (type IN ('income', 'expense')),
+                    type VARCHAR(10) NOT NULL,
                     category VARCHAR(50) NOT NULL,
                     amount DECIMAL(10,2) NOT NULL,
                     description VARCHAR(255),
@@ -100,7 +103,7 @@ class SnowflakeConnector:
                 CREATE TABLE IF NOT EXISTS investments (
                     id INTEGER AUTOINCREMENT PRIMARY KEY,
                     date DATE NOT NULL,
-                    type VARCHAR(20) NOT NULL CHECK (type IN ('stock', 'fund', 'crypto', 'bond')),
+                    type VARCHAR(20) NOT NULL,
                     symbol VARCHAR(20) NOT NULL,
                     name VARCHAR(100) NOT NULL,
                     quantity DECIMAL(10,4) NOT NULL,
@@ -115,7 +118,7 @@ class SnowflakeConnector:
                 CREATE TABLE IF NOT EXISTS categories (
                     id INTEGER AUTOINCREMENT PRIMARY KEY,
                     name VARCHAR(50) NOT NULL UNIQUE,
-                    type VARCHAR(10) NOT NULL CHECK (type IN ('income', 'expense')),
+                    type VARCHAR(10) NOT NULL,
                     description VARCHAR(255),
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
